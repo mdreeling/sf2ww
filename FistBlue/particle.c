@@ -40,7 +40,7 @@ void RHActionTick(Object *obj) {
     if(--obj->Timer == 0) {
         if(RHSwapWord(obj->ActionScript->Flags) & 0x8000) {
             
-            u32 *next = (void *)obj->ActionScript + sizeof(FBAction);
+            u32 *next = (u8 *)obj->ActionScript + sizeof(FBAction);
             obj->ActionScript = (FBAction *)RHCODE(RHSwapLong(*next));
         } else {
             obj->ActionScript++;

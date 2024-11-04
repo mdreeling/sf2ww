@@ -78,7 +78,7 @@ static void action_12(Object *obj);
 static void action_13(Object *obj);
 static void action_14(Object *obj);
 static void action_15(Object *obj);
-static void action_16(Object *obj);
+//static void action_16(Object *obj);
 static void action_17(Object *obj);
 static void action_18(Object *obj);
 static void action_19(Object *obj);
@@ -295,7 +295,7 @@ static void action_1(Object *obj) {	/* cb2a */
 					obj->YPI += (gstate_Scroll2.position.y.part.integer >> 1);
 					check_rect_queue_draw(obj);
 					break;
-				case 2 ... 11:
+				case 2:
 					check_rect_queue_draw(obj);
 					break;
 					FATALDEFAULT;
@@ -851,7 +851,7 @@ static void action_0f(Object *obj) {		// 10b44 Another Bird
 	}
 }
 
-#pragma mark Act10 10c66
+//#pragma mark Act10 10c66
 
 static void action_10(Object *obj) {
 	char data_10c9e[]={
@@ -912,7 +912,7 @@ static void action_10(Object *obj) {
 	}
 }
 
-#pragma mark ACT11  10ff4 Barely noticable bat 
+//#pragma mark ACT11  10ff4 Barely noticable bat 
 
 static void action_11(Object *obj) {
 	UD11 *ud = (UD11 *)&obj->UserData;
@@ -3401,7 +3401,7 @@ static void action_3b(Object *obj) {	//203ba
 		FATALDEFAULT;
 	}
 }
-#pragma mark Act40 20de8
+//#pragma mark Act40 20de8
 static void sub_20f10(Object *obj, Player *ply) {
     sub_bcd_32(0x400, &ply->x015c);
     if (ply->x015c > 0) {
@@ -3800,7 +3800,7 @@ static void action_41(Object *obj)
     }
 }
 
-#pragma mark Projectile 207f0
+//#pragma mark Projectile 207f0
 // see barrels.c
 
 

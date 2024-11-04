@@ -28,7 +28,7 @@
 #include "sm.h"
 
 #ifdef REDHAMMER
-#import "demo.h"
+//#import "demo.h"
 #endif
 
 #ifdef __APPLE__
@@ -117,7 +117,7 @@ void init_fight_vars(void) {			/* 0x2b0c */
 	g.Player2.OpponentID = g.Player1.FighterID;
 	g.Player1.OpponentID = g.Player2.FighterID;
 	
-	memclear(&g.x0a4a, (void *)&g.x0a6a - (void *)&g.x0a4a);
+	memclear(&g.x0a4a, (u8 *)&g.x0a6a - (u8*)&g.x0a4a);
 }
 	
 void newgame(void) {
@@ -127,49 +127,31 @@ void newgame(void) {
 	
 static void sub_2af2(void) {
 	/* 0x180 bytes in CPS */
-	memclear(&g.CurrentStage, (void *)&g.x0b4a - (void *)&g.CurrentStage);
+	memclear(&g.CurrentStage, (u8*)&g.x0b4a - (u8*)&g.CurrentStage);
 	g.Player1.Score = 0;
 	g.Player2.Score = 0;
 }
 
 #pragma SiennaBird glue
 
-void sf2_backtrace(int count) {
-#ifndef CPS
-	void *callstack[128];
-	int i, frames = backtrace(callstack, 128);
-	char** strs = backtrace_symbols(callstack, frames);
-    
-    if (count && frames > (count-1)) {
-        frames = count - 1;
-    }
-	for (i = 0; i < frames; ++i) {
-		printf("%s\n", strs[i]);
-	}
-	free(strs);
-    
-	exit(1);
-#endif
-}
-
 void debughook(int data) {
 	/* unimp */
 }
 
 // todo: move me
-_Noreturn void FBPanic(int data) {
+__declspec(noreturn) void FBPanic(int data) {
 	printf("PANIC()\n");
 
 #ifndef CPS
-	void *callstack[128];
-	int i, frames = backtrace(callstack, 128);
-	char** strs = backtrace_symbols(callstack, frames);
-	for (i = 0; i < frames; ++i) {
-		printf("%s\n", strs[i]);
-	}
-	free(strs);
+	//void *callstack[128];
+	//int i, frames = backtrace(callstack, 128);
+	//char** strs = backtrace_symbols(callstack, frames);
+	//for (i = 0; i < frames; ++i) {
+//		printf("%s\n", strs[i]);
+//	}
+//	free(strs);
 
-    abort();
+//    abort();
 #endif
 }
 
@@ -816,7 +798,8 @@ void LBInitPlayers(void) {		// 2c8a
 	_init_difficulty();	
 	_init_energy();		
 	
-	memclear((void *) &g.TimeRemainBCD, ((void *)&g.x0b4a - (void *)&g.TimeRemainBCD));
+    memclear((void*)&g.TimeRemainBCD, (u8*)&g.x0b4a - (u8*)&g.TimeRemainBCD);
+
 	
 	g.TimeWarpTimer     = 0;
 	g.TimeWarpSlowdown  = 0;
@@ -950,8 +933,8 @@ void memclear(void *c, int len) {
 #pragma mark ---- Resetter Functions ----
 
 void clear_players(void) {
-    memclear((char *)PLAYER1, (void *)(&PLAYER1->Alive) - (void *)(&PLAYER1->exists));	
-    memclear((char *)PLAYER2, (void *)(&PLAYER2->Alive) - (void *)(&PLAYER2->exists));
+    memclear((char *)PLAYER1, (u8 *)(&PLAYER1->Alive) - (u8*)(&PLAYER1->exists));
+    memclear((char *)PLAYER2, (u8*)(&PLAYER2->Alive) - (u8*)(&PLAYER2->exists));
 }
 
 static void clear_gstates(void) {			/* 0x2944 */
@@ -1861,13 +1844,13 @@ void actionlibrary(void) {
 		{0x08, 0x0a, 0x25, 0x00, 0x00, 0x00, 0x0000, 0x0000, 0x0000},
 		
 	};
-	static const struct actionhdr data_83042[]={
+	static const struct actionhdr data_83042[]={0
 		
 	};
-	static const struct actionhdr data_83044[]={
+	static const struct actionhdr data_83044[]={0
 		
 	};
-	static const struct actionhdr data_83046[]={
+	static const struct actionhdr data_83046[]={0
 		
 	};
 	static const struct actionhdr data_83048[]={
@@ -1906,7 +1889,7 @@ void actionlibrary(void) {
 		{0x08, 0x01, 0x39, 0x00, 0x00, 0x00, 0x0000, 0x00c0, 0x0048},
 		
 	};
-	static const struct actionhdr data_83178[]={
+	static const struct actionhdr data_83178[]={0
 		
 	};
 	static const struct actionhdr *data_actions[]={ 
@@ -2008,13 +1991,13 @@ void task_playground(void) {
                     void *baseAddr = RHCODE(0);
                     const void *ryuStand = RHOffsetLookup16(RHCODE(0x37f1e), 0);
                     
-                    printf("Ryu offset = %lx\n", ryuStand - baseAddr);
+                    //printf("Ryu offset = %lx\n", ryuStand - baseAddr);
                     
                     int offset2 = RHSwapWord(*(u16 *)ryuStand);
                     printf("offset2 = %x\n", offset2);
                     
-                    const void *location2 = ryuStand + offset2;
-                    printf("addr2 = %lx\n", location2 - baseAddr);
+                    //const void *location2 = ryuStand + offset2;
+                    //printf("addr2 = %lx\n", location2 - baseAddr);
                     
                     RHSetActionList(&g.Player1, ryuStand, 2);
                     break;

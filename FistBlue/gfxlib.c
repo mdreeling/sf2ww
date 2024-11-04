@@ -1,5 +1,6 @@
 /* gfxlib.c functions in here are loose emulations of CPS graphics */
 
+#include "windows.h"
 #include "sf2.h"
 
 #include "structs.h"
@@ -85,11 +86,11 @@ void setpalette_scroll1(short palette) {		// emulation of 16ca
     }
 }
 
-inline void palette_scr1_16(void) {		/* 168c  */
+ void palette_scr1_16(void) {		/* 168c  */
 	setpalette_scroll1(16);
 }
 
-inline void palette_scr1_19(void) {		// 1692
+ void palette_scr1_19(void) {		// 1692
 	setpalette_scroll1(19);
 }
 
@@ -771,10 +772,10 @@ void actiontickdraw(Object *obj) {		/* 0x41d4 */
     if(--obj->Timer) { return; }
 
     if (RHSwapWord(obj->ActionScript->Flags) & 0x8000) {
-        u32 *next = (void *)obj->ActionScript + sizeof(FBSimpleAction);
+        u32 *next = (u8*)obj->ActionScript + sizeof(FBSimpleAction);
         obj->ActionScript = (const FBAction *)RHCODE(RHSwapLong(*next));
     } else {
-        const void *next = (void *)obj->ActionScript + sizeof(FBSimpleAction);
+        const void *next = (u8*)obj->ActionScript + sizeof(FBSimpleAction);
         obj->ActionScript = (const FBAction *)next;
     }
     obj->Timer       = RHSwapWord(obj->ActionScript->Delay);

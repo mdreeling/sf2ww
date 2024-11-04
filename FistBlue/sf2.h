@@ -9,6 +9,8 @@
 #ifndef MT2_sf2_h
 #define MT2_sf2_h
 
+#include <windows.h>
+
 #include "sf2types.h"
 #include "sf2macros.h"
 #include "sf2const.h"
@@ -40,13 +42,25 @@
 #ifdef REDHAMMER
 #include "strings.h"
 #include <stdio.h>
-#include <libgen.h>
 #include "redhammer.h"
 
+#ifdef _WIN32
+#include <shlwapi.h>
+#pragma comment(lib, "Shlwapi.lib")
+
+// Replace basename with PathFindFileName for Windows
+#define DEBUG_GEN(fmt, ...) \
+do { if (FISTBLUE_DEBUG_GEN) fprintf(stderr, "%s:%d:%s():" fmt, \
+PathFindFileName(__FILE__), __LINE__, __func__, __VA_ARGS__); } while (0)
+
+#else
+#include <libgen.h>  // For basename on Unix-like systems
 
 #define DEBUG_GEN(fmt, ...) \
 do { if (FISTBLUE_DEBUG_GEN) fprintf(stderr, "%s:%d:%s():" fmt, \
 basename(__FILE__), __LINE__, __func__, __VA_ARGS__); } while (0)
+
+#endif // _WIN32
 
 #endif  // REDHAMMER
 

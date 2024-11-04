@@ -11,6 +11,10 @@
 
 #define MAX_TASKS       16
 
+ // Define __STRING if not already defined
+#ifndef __STRING
+#define __STRING(x) #x
+#endif
 
 #include "sf2types.h"
 

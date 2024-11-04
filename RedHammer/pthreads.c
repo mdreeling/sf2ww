@@ -11,7 +11,12 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+#ifdef _WIN32
+#include <windows.h>  // Windows-specific headers
+#else
+#include <unistd.h>   // POSIX-specific headers
+#endif
+
 #include <stdio.h>
 
 #include "sf2const.h"

@@ -1,3 +1,4 @@
+#include <windows.h>
 /* sf2types.h */
 #ifndef INC_SF2TYPES
 #define INC_SF2TYPES
@@ -31,6 +32,12 @@
 #define SF2_ENDIAN_LITTLE
 #define SF2_CPU_ARM
 #endif 
+
+#ifdef _M_X64
+#define SF2_ENDIAN_LITTLE
+#define SF2_CPU_AMD64  // Treat as AMD64 for consistency
+#endif
+
 // Big Endian CPUs
 
 #ifdef __POWERPC__
@@ -43,7 +50,6 @@
 #define SF2_CPU_M68K
 #endif
 
-
 // Microsoft Visual Studio
 
 #ifdef _M_PPC
@@ -55,6 +61,7 @@
 #define SF2_ENDIAN_LITTLE
 #define SF2_CPU_I386
 #endif
+
 
 
 typedef u16 *CPSCOORD;
@@ -78,29 +85,53 @@ typedef struct tile_attribute_pair {
 
 #ifdef SF2_ENDIAN_LITTLE
 
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
+
 typedef union FIXED16_16tag {
     int full;
     struct part16_16tag {
         unsigned int fraction: 16;
         signed int integer: 16;
-    } __attribute__((packed)) part;
+    } part;
 } FIXED16_16;
+
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
+
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 
 typedef union FIXED8_8tag {
     short full;
     struct part8_8tag {
         unsigned int fraction: 8;
         signed int integer: 8;
-    } __attribute__((packed)) part;
+    } part;
 } FIXED8_8;
+
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
+
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 
 typedef union DUALtag {
     u16 full;
     struct dualtag {
         u8 p0;
         u8 p1;
-    }  __attribute__((packed)) part;
+    } part;
 } DUAL;
+
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
 #endif
 
@@ -174,10 +205,18 @@ struct Rect8 {
 /// A signed 8-bit position and size
 typedef struct Rect8 RECT8;
 
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
+
 struct Vect16 {
 	FIXED8_8 x;
 	FIXED8_8 y;
-} __attribute__((packed));
+};
+
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
 typedef struct Vect16 VECT16;
 

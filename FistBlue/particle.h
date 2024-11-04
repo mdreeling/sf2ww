@@ -2,6 +2,11 @@
 #ifndef INC_PARTICLE
 #define INC_PARTICLE
 
+#ifdef _MSC_VER
+// Redefine `__attribute__` to ignore it on MSVC
+#define __attribute__(x)
+#endif
+
 #include "scroll.h"
 
 #define	GFX_LAYER1 4

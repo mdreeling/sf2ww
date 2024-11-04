@@ -258,7 +258,7 @@ void _SMAct05(Object_G2 *obj);
 // in car.c
 void _ActSMCar(Object_G2 *obj);
 
-#pragma mark Act07 Guiles's Crate
+//#pragma mark Act07 Guiles's Crate
 static void _SMAct07(Object_G2 *obj) {			// 272c6
 	static const char data_27384[] = {
 		0, 4, 2, 3, 0, 1, 3, 2, 1, 4, 3, 2, 0, 1, 4, 2

@@ -1547,7 +1547,7 @@ void ply_exit_air(Player *ply) {		// 28862
 }
 
 	
-inline short check_round_result(void) {		/* 2cd06 */
+short check_round_result(void) {		/* 2cd06 */
 	return g.RoundResult;
 }
 

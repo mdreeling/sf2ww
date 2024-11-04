@@ -1,5 +1,6 @@
     /* effects.c Ported Low level CPS routines */
 
+#include "windows.h"
 #include <stdio.h>
 
 #include "sf2.h"
@@ -23,6 +24,11 @@
 
 #ifndef CPS
 #include "gfx_glut.h"
+#endif
+
+// Define __STRING if not already defined
+#ifndef __STRING
+#define __STRING(x) #x
 #endif
 
 extern struct executive_t Exec;

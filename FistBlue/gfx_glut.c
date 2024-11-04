@@ -6,7 +6,11 @@
 #include <string.h>
 #include <math.h>
 #include <time.h>
-#include <unistd.h>
+#ifdef _WIN32
+#include <windows.h>  // Windows-specific headers
+#else
+#include <unistd.h>   // POSIX-specific headers
+#endif
 
 #include "redhammer.h"
 
@@ -338,7 +342,7 @@ u16 *ehonda;
 void gfx_glut_init(void) {
 	int i;
 	
-    gfxrom=fopen( "./sf2gfx.bin", "r" );
+    gfxrom=fopen( "./sf2gfx.bin", "rb" );
     if(gfxrom == NULL) {
         printf("fatal: couldn't open graphics ROM in %s", getcwd(NULL, 0));
         exit(EXIT_FAILURE);
@@ -895,8 +899,8 @@ void gfx_glut_drawgame(void) {
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	
 	if (texture_mode) {
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	} else {

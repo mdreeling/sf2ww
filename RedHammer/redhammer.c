@@ -13,7 +13,12 @@
 
 #endif
 
-#include <unistd.h>
+#ifdef _WIN32
+#include <windows.h>  // Windows-specific headers
+#else
+#include <unistd.h>   // POSIX-specific headers
+#endif
+
 
 #include "redhammer.h"
 
@@ -78,7 +83,20 @@ void load_cps_roms()
 {
     if ((g_code_roms = malloc(ALL_CODE_SIZE))) {
 #ifdef REDHAMMER_USE_ALLROMS_BIN
-        FILE *allroms = fopen("allroms.bin", "r");
+
+        // Buffer to store the current working directory
+        char cwd[1024];
+
+        // Get the current working directory and print it
+        if (_getcwd(cwd, sizeof(cwd)) != NULL) {
+            printf("Current working directory: %s\n", cwd);
+        }
+        else {
+            perror("getcwd() error");
+            exit(EXIT_FAILURE);
+        }
+
+        FILE *allroms = fopen("allroms.bin", "rb");
         if (allroms == NULL) {
             puts("Can't open allroms.bin\n");
             exit(EXIT_FAILURE);
@@ -108,6 +126,11 @@ void load_cps_roms()
         puts("Can't allocate memory!");
         exit(EXIT_FAILURE);
     }
+
+    if (g_code_roms == NULL) {
+        fprintf(stderr, "Memory allocation for g_code_roms failed.\n");
+        exit(EXIT_FAILURE);
+    }
 }
 
 #endif
@@ -123,7 +146,13 @@ const void *RHOffsetLookup16(const u16 *base, int index)
 }
 
 const u16 RHWordOffset(u32 base, int index)
-{
+{   
+   /* u32 offset = base + (2 * index);
+    if (offset >= ALL_CODE_SIZE) {
+        fprintf(stderr, "Offset out of bounds: %u (base=%u, index=%d)\n", offset, base, index);
+        exit(EXIT_FAILURE);
+    }*/
+
     return RHSwapWord(*(u16 *)(RHCODE(base + (2 * index))));
 }
 
