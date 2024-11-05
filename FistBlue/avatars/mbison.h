@@ -28,6 +28,9 @@ int PLCBCompJumpMBison(Player *ply);
 
 void sub_3623e(Player *ply);
 
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 struct UserData_MBison {
 	u8		x0080;			//far move
 	u8		x0081;			//closemove
@@ -42,5 +45,7 @@ struct UserData_MBison {
 	short	x008e;
 	char	x0090;
 	u8	x0092;
-} __attribute__((packed));
-
+} ;
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif

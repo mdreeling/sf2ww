@@ -2,11 +2,6 @@
 #ifndef INC_PARTICLE
 #define INC_PARTICLE
 
-#ifdef _MSC_VER
-// Redefine `__attribute__` to ignore it on MSVC
-#define __attribute__(x)
-#endif
-
 #include "scroll.h"
 
 #define	GFX_LAYER1 4
@@ -65,6 +60,10 @@ struct particle {
 
 typedef u32 RHImagePtr;
 
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
+
 struct fb_action {
     u16		Delay;			/* aka chr ctr */
     u16		Flags;
@@ -83,7 +82,10 @@ struct fb_action {
     u8		DamageMod;  /* 0x15 */
     u8		ExtraSprite;/* extra sprite selector*/
     char	Yoke;		/* YOKE, 0x17 neutral jumps, 06 forward/backward jumps, 0xff walking */
-} __attribute__((packed));
+} ;
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
 typedef struct fb_action FBAction;
 
@@ -108,11 +110,19 @@ struct action {
     char	Yoke;		/* YOKE, 0x17 neutral jumps, 06 forward/backward jumps, 0xff walking */
 };
 
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
+
 struct fb_simpleaction {
     short Delay;
     short Flags;
     RHImagePtr Image;
-} __attribute__((packed));
+} ;
+
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
 typedef struct fb_simpleaction FBSimpleAction;
 

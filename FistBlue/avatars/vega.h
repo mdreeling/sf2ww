@@ -12,6 +12,9 @@ struct vegathrow {
 	char	success;
 };
 
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 struct UserData_Vega {
 	u8	x0080;
 	
@@ -19,6 +22,8 @@ struct UserData_Vega {
 	short	x0092;
 	short	x0094;
 	char	x0096;
-} __attribute__((packed));
-
+} ;
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 void PLCBCompAttackVega(Player *ply);

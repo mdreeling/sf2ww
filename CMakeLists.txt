@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(mt2-glut VERSION 0.1.0 LANGUAGES C)
-
 set(THREADS_PREFER_PTHREAD_FLAG ON)
+set(GLUT_INCLUDE_DIR "C:\\Users\\gadga\\source\\libs\\freeglut\\include")
+set(GLUT_glut_LIBRARY "C:\\Users\\gadga\\source\\libs\\freeglut\\lib\\freeglut.lib")
 find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(Threads REQUIRED)
 
 add_executable(glutBasics glutBasics.c
             trackball.c
@@ -97,7 +97,19 @@ target_include_directories(glutBasics PUBLIC
     SwiftBeam
 )
 
-target_link_libraries(glutBasics PRIVATE m OpenGL::GL OpenGL::GLU GLUT::GLUT Threads::Threads)
+if (WIN32)
+    target_link_libraries(glutBasics PRIVATE OpenGL::GL OpenGL::GLU GLUT::GLUT)
+else()
+    target_link_libraries(glutBasics PRIVATE m OpenGL::GL OpenGL::GLU GLUT::GLUT)
+endif()
+
+if (WIN32)
+    include_directories("C:/Users/gadga/source/libs/pthreads-w32/Pre-built.2/include")
+    # Add CMocka include directory
+    include_directories("C:/Users/gadga/source/libs/cmocka-1.1.5/include")
+    target_link_libraries(glutBasics PRIVATE "C:/Users/gadga/source/libs/pthreads-w32/Pre-built.2/lib/x86/pthreadVC2.lib" "C:/Users/gadga/source/libs/cmocka-1.1.5/build/src/Debug/cmocka.lib")
+    add_compile_definitions(GL_SILENCE_DEPRECATION=1)
+endif()
 
 if (APPLE)
     message(STATUS "Designed by Apple in California")
@@ -106,10 +118,6 @@ endif()
 
 if (CPS)
     message(FATAL_ERROR "Building for CPS is not supported yet")
-endif()
-
-if (NOT UNIX)
-    message(FATAL_ERROR "Only Unix builds are supported")
 endif()
 
 enable_testing()

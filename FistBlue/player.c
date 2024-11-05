@@ -268,13 +268,20 @@ void LBInitHitBoxes(Player *ply) {	/* 388c initialise player hitboxes, vega clar
 }
     
 void ply_thrown(Player *ply) {        /* 3948 data at 93440 */
-    struct throwcatch {
-        char x;
-        char y;
-        char drawOrder;
-        char catchSprite;
-    } __attribute__((packed));
     
+    #ifdef _MSC_VER
+    #pragma pack(push, 1)
+    #endif
+        struct throwcatch {
+            char x;
+            char y;
+            char drawOrder;
+            char catchSprite;
+        } ;
+    #ifdef _MSC_VER
+    #pragma pack(pop)
+    #endif
+
     const void *opponent = RHOffsetLookup16(RHCODE(0x93440), ply->Opponent->FighterID);
     const struct throwcatch *catch = RHOffsetLookup16(opponent, ply->FighterID);
     

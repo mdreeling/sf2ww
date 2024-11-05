@@ -56,6 +56,9 @@ struct ryuken_power_move_state {
     char    unused[5];
 };
 
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 struct UserData_RyuKen {
 	u16		x0084;
 	char	x0086;
@@ -76,7 +79,11 @@ struct UserData_RyuKen {
 	FIXED16_16  ShoryukenXDash;
 	FIXED16_16	ShoryukenY;			/* f8 */
 	FIXED16_16	ShoryukenYDash;	
-} __attribute__((packed));
+} ;
+
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
 struct KenRyuInputs {
 	u16 buttons; // %d0

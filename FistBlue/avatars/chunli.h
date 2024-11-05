@@ -34,7 +34,9 @@ void PLCBCompAttackChunLi(Player *ply);
 void PSCBVictoryChunLi(Player *ply);
 
 #define CHUNLI_STATUS_VICTORY 0x50
-
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 struct UserData_ChunLi {
 	u8		mode_birdkick;		//0x0080
 	u8		timer_birdkick0;
@@ -61,7 +63,11 @@ struct UserData_ChunLi {
 	char	x00a4;		// is probably a dual
 	char	x00a5;
 	
-} __attribute__((packed));
+} ;
+
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
 struct UserDataComp_ChunLi {
 	u8		comp_farmove;		//h0080c	;		// far move

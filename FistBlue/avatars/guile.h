@@ -28,7 +28,9 @@ void _GuileExitStand(Player *ply);		/* 2f08c */
 void _GuileExitCrouch(Player *ply);		/* 2f096 */
 void _GuileExitJump(Player *ply);		/* 2f0a0 */
 
-
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 struct UserData_Guile {
 	u8	SonicStep;
 	u8	SonicTimer;
@@ -47,7 +49,9 @@ struct UserData_Guile {
 	u8	AirThrow;		// 8e
 	u8	AirThrow2;
 	u8	SonicStrength;	//0090  0,1,2
-} __attribute__((packed));
-
+} ;
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 #define GUILE_STATUS_VICTORY	0x50
 
