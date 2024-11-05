@@ -13,6 +13,13 @@
 
 #endif
 
+// Portable endianness detection
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define __LITTLE_ENDIAN__
+#elif defined(_WIN32) || defined(_WIN64)
+#define __LITTLE_ENDIAN__  // Windows is little-endian by default
+#endif
+
 #ifdef _WIN32
 #include <windows.h>  // Windows-specific headers
 #else
@@ -241,6 +248,31 @@ u16 RHReadWord(int romaddr)
     void *addr = RHCODE(romaddr);
     return RHSwapWord(*(u16 *)addr);
 }
+
+/** Test Version **/
+u16 RHReadWordDebug(const char* rom, int offset) {
+    // Check if offset is within bounds
+    if (offset < 0 || offset + 1 >= sizeof(rom)) {
+        fprintf(stderr, "Error: Offset %d is out of bounds for rom (provided size %zu)\n", offset, sizeof(rom));
+        return 0;
+    }
+
+    // Read the two bytes at the specified offset
+    u8 high_byte = rom[offset];
+    u8 low_byte = rom[offset + 1];
+
+    // Combine bytes based on big-endian assumption
+    u16 result = (high_byte << 8) | low_byte;
+
+    // Print debug information
+    printf("Debug: RHReadWord(offset=%d)\n", offset);
+    printf("  high_byte (rom[%d]) = 0x%x\n", offset, high_byte);
+    printf("  low_byte  (rom[%d]) = 0x%x\n", offset + 1, low_byte);
+    printf("  result (big-endian) = 0x%x\n", result);
+
+    return result;
+}
+
 
 void redhammer_run_tests(void) {
     

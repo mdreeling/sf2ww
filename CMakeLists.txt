@@ -6,6 +6,9 @@ set(GLUT_glut_LIBRARY "C:\\Users\\gadga\\source\\libs\\freeglut\\lib\\freeglut.l
 find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
 
+set(CMOCKA_LIB_PATH "C:/Users/gadga/source/libs/cmocka-1.1.5/build/src/Debug/cmocka.lib")
+message(STATUS "Linking Debug cmocka library: ${CMOCKA_LIB_PATH}")
+
 add_executable(glutBasics glutBasics.c
             trackball.c
 			FistBlue/coinage.c
@@ -109,6 +112,10 @@ if (WIN32)
     include_directories("C:/Users/gadga/source/libs/cmocka-1.1.5/include")
     target_link_libraries(glutBasics PRIVATE "C:/Users/gadga/source/libs/pthreads-w32/Pre-built.2/lib/x86/pthreadVC2.lib" "C:/Users/gadga/source/libs/cmocka-1.1.5/build/src/Debug/cmocka.lib")
     add_compile_definitions(GL_SILENCE_DEPRECATION=1)
+endif()
+
+if (MSVC)
+    add_compile_options(/wd4068)  # Suppress unknown pragma warning
 endif()
 
 if (APPLE)

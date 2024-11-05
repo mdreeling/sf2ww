@@ -12,7 +12,7 @@
 #include <cmocka.h>
 #include "test_redhammer.h"
 
-#include "redhammer.h"
+#include <redhammer.h>
 
 char testRom[] = {
     0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
@@ -24,7 +24,8 @@ char testRom[] = {
 };
 
 void test_RHReadWord(void **state) {
-    assert_int_equal(0x304, RHReadWord(2));
+    printf("Testing RHReadWord with offset 2...\n");
+    assert_int_equal(0x0304, RHReadWord(2));
 }
 
 void test_RHReadLong(void **state) {
