@@ -139,7 +139,7 @@ static short _GSCalcBlockIndex(ScrollState *gs, CP cp) {
     gs->Index        = index;
     gs->InitialIndex = index;
 
-    printf("gs->TileMaps address: %p, index: %d\n", (void*)gs->TileMaps, index);
+    // printf("gs->TileMaps address: %p, index: %d\n", (void*)gs->TileMaps, index);
 
     if (((uintptr_t)gs->TileMaps) % sizeof(u16) != 0) {
         fprintf(stderr, "Unaligned access at gs->TileMaps: %p\n", (void*)gs->TileMaps);

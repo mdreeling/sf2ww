@@ -49,6 +49,48 @@
 #define TICKER_X 176
 #define TICKER_Y 208
 
+#ifdef _WIN32
+#include <windows.h>
+#include <DbgHelp.h>
+#pragma comment(lib, "Dbghelp.lib")
+
+void printStackTrace() {
+    void* stack[128];
+    unsigned short frames;
+    SYMBOL_INFO* symbol;
+    HANDLE process = GetCurrentProcess();
+
+    SymInitialize(process, NULL, TRUE);
+    frames = CaptureStackBackTrace(0, 128, stack, NULL);
+
+    symbol = (SYMBOL_INFO*)malloc(sizeof(SYMBOL_INFO) + 256 * sizeof(char));
+    symbol->MaxNameLen = 255;
+    symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+
+    for (unsigned int i = 0; i < frames; i++) {
+        SymFromAddr(process, (DWORD64)(stack[i]), 0, symbol);
+        printf("%u: %s - 0x%0X\n", frames - i - 1, symbol->Name, (unsigned int)symbol->Address);
+    }
+
+    free(symbol);
+    SymCleanup(process);
+}
+#else
+#include <execinfo.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+void printStackTrace() {
+    void* callstack[128];
+    int i, frames = backtrace(callstack, 128);
+    char** strs = backtrace_symbols(callstack, frames);
+    for (i = 0; i < frames; ++i) {
+        printf("%s\n", strs[i]);
+    }
+    free(strs);
+}
+#endif
+
 extern Game g;
 extern ScrollState gstate_Scroll1;
 extern ScrollState gstate_Scroll2;
@@ -143,15 +185,7 @@ __declspec(noreturn) void FBPanic(int data) {
 	printf("PANIC()\n");
 
 #ifndef CPS
-	//void *callstack[128];
-	//int i, frames = backtrace(callstack, 128);
-	//char** strs = backtrace_symbols(callstack, frames);
-	//for (i = 0; i < frames; ++i) {
-//		printf("%s\n", strs[i]);
-//	}
-//	free(strs);
-
-//    abort();
+    printStackTrace();
 #endif
 }
 
