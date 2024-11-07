@@ -43,7 +43,9 @@ void action_1e(Object *obj) {		//18c1c
 			}
 			enqueue_and_layer(obj);
 			break;
-		case 2:
+        case 0:
+        case 1:
+        case 2:
 			switch (obj->mode0) {
 				case 0:
 					NEXT(obj->mode0);

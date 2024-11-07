@@ -52,6 +52,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #include <DbgHelp.h>
+#include <stdio.h>
 #pragma comment(lib, "Dbghelp.lib")
 
 void printStackTrace() {
@@ -60,16 +61,41 @@ void printStackTrace() {
     SYMBOL_INFO* symbol;
     HANDLE process = GetCurrentProcess();
 
+    // Initialize the symbol handler
     SymInitialize(process, NULL, TRUE);
     frames = CaptureStackBackTrace(0, 128, stack, NULL);
 
+    // Allocate symbol structure
     symbol = (SYMBOL_INFO*)malloc(sizeof(SYMBOL_INFO) + 256 * sizeof(char));
     symbol->MaxNameLen = 255;
     symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
 
+    IMAGEHLP_LINE64 line;
+    line.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
+    DWORD displacement;
+
+    // Print each stack frame
     for (unsigned int i = 0; i < frames; i++) {
-        SymFromAddr(process, (DWORD64)(stack[i]), 0, symbol);
-        printf("%u: %s - 0x%0X\n", frames - i - 1, symbol->Name, (unsigned int)symbol->Address);
+        if (SymFromAddr(process, (DWORD64)(stack[i]), 0, symbol)) {
+            printf("%u: %s - 0x%0X", frames - i - 1, symbol->Name, (unsigned int)symbol->Address);
+
+            // Attempt to get line number information
+            if (SymGetLineFromAddr64(process, (DWORD64)(stack[i]), &displacement, &line)) {
+                printf(" (%s:%d)", line.FileName, line.LineNumber);  // Print file and line number
+            }
+            else {
+                // Error while getting line info
+                DWORD error = GetLastError();
+                printf(" (line info not available, error: %lu)", error);
+            }
+
+            printf("\n");
+}
+        else {
+            // Error while getting symbol info
+            DWORD error = GetLastError();
+            printf("%u: [Unknown function] - 0x%0X (error: %lu)\n", frames - i - 1, (unsigned int)stack[i], error);
+        }
     }
 
     free(symbol);
@@ -1878,15 +1904,10 @@ void actionlibrary(void) {
 		{0x08, 0x0a, 0x25, 0x00, 0x00, 0x00, 0x0000, 0x0000, 0x0000},
 		
 	};
-	static const struct actionhdr data_83042[]={0
-		
-	};
-	static const struct actionhdr data_83044[]={0
-		
-	};
-	static const struct actionhdr data_83046[]={0
-		
-	};
+    static const struct actionhdr data_83042[100];
+    static const struct actionhdr data_83044[100];
+    static const struct actionhdr data_83046[100];
+
 	static const struct actionhdr data_83048[]={
 		{0x08, 0x08, 0x24, 0x00, 0x00, 0x00, 0x0000, 0x0088, 0x014e},
 		{0x08, 0x08, 0x24, 0x00, 0x00, 0x01, 0x0000, 0x0130, 0x0146},

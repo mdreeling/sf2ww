@@ -78,7 +78,9 @@ static void action_12(Object *obj);
 static void action_13(Object *obj);
 static void action_14(Object *obj);
 static void action_15(Object *obj);
-//static void action_16(Object *obj);
+// mdreeling 11/6/2024 This function has not been implemented
+// Removing to enable windows build
+// static void action_16(Object *obj);
 static void action_17(Object *obj);
 static void action_18(Object *obj);
 static void action_19(Object *obj);
@@ -295,17 +297,27 @@ static void action_1(Object *obj) {	/* cb2a */
 					obj->YPI += (gstate_Scroll2.position.y.part.integer >> 1);
 					check_rect_queue_draw(obj);
 					break;
-				case 2:
-					check_rect_queue_draw(obj);
-					break;
-					FATALDEFAULT;
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
+                case 11:
+                    check_rect_queue_draw(obj);
+                    break;
+
+                FATALDEFAULT;  // Handles any unanticipated values
 			}
 			break;
 		case 4:
 		case 6:
 			FreeActor(obj);
 			break;
-			FATALDEFAULT;
+		FATALDEFAULT;
 	}	
 }
 

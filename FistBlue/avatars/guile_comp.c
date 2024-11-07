@@ -235,16 +235,22 @@ static void guile_comp_kick(Player *ply) {		//33db8
 					}
 					PLAYERTICK;
 					break;
-				case 6:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
 					if (AF1) {
 						ply_exit_stand(ply);
 					} else {
 						PLAYERTICK;
 					}
+                    FATALDEFAULT;
 					break;
 					;
 			}
-			;
+            FATALDEFAULT;;
 	}
 }
 static void guile_comp_crouch_punch(Player *ply) {		// 33ed4 

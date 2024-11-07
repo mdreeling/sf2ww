@@ -17,15 +17,15 @@
 
 // Debugging Switches
 
-//#define REDHAMMER_PLAYGROUND
+// #define REDHAMMER_PLAYGROUND
 
-#define FISTBLUE_SKIP_COPYRIGHT
+// #define FISTBLUE_SKIP_COPYRIGHT
 
 // Debug levels
-#define FISTBLUE_DEBUG_SM 1
-#define FISTBLUE_DEBUG_AI 1
-#define FISTBLUE_DEBUG_GEN 2
-#define FISTBLUE_DEBUG_SPRITE 3
+#define FISTBLUE_DEBUG_SM 4
+#define FISTBLUE_DEBUG_AI 4
+#define FISTBLUE_DEBUG_GEN 4
+#define FISTBLUE_DEBUG_SPRITE 4
 
 // Override geographical location for ROMset
 //#define FISTBLUE_SF2UA_JAP
